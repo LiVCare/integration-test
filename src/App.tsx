@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import LivMananger, { Network } from 'livcare-js'
 import { ethers } from 'ethers'
-import TableAssets from './componentes/TableAssets';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MainPage from './componentes/MainPage';
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
     if (!window.ethereum) {
       alert('MetaMask is not installed. Please consider installing it: https://metamask.io/download.html');
     } else {
-      const accounts = await window.ethereum.request({
+      await window.ethereum.request({
         method: "eth_requestAccounts",
       });
 
@@ -32,7 +32,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         {connected ?
-          <TableAssets livManager={livManager} provider={provider}/>
+          <MainPage livManager={livManager} provider={provider}/>
           :
           <button onClick={() => connect()}>
             Connect to MetaMask

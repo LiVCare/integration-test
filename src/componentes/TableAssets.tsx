@@ -32,8 +32,6 @@ const TableAssets = ({ livManager, provider }: TableAssetsProps) => {
         setDecimals(decimals)
     }
 
-    const openBorrow = (id: string, decimals: string) => {}
-
     return (
         <>
             <div className="footer">
@@ -54,7 +52,6 @@ const TableAssets = ({ livManager, provider }: TableAssetsProps) => {
                                 <td>{convertUnits(reserve.currentVariableBorrowRate)} % </td>
                                 <td>{convertUnits(reserve.currentLiquidityRate)} %</td>
                                 <td><Button onClick={() => openInvest(reserve.id, reserve.decimals)}>Invest</Button></td>
-                                <td><Button onClick={() => openBorrow(reserve.id, reserve.decimals)}>Borrow</Button></td>
                             </tr>)}
                     </tbody>
                 </Table>
