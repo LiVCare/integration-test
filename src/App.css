@@ -40,3 +40,11 @@
     transform: rotate(360deg);
   }
 }
+
+.main{
+  padding-top: 25px;
+}
+
+.table{
+  color: #282c34 !important;
+}

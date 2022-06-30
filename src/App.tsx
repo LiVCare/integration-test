@@ -4,12 +4,20 @@ import LivMananger, { Network } from 'livcare-js'
 import { ethers } from 'ethers'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainPage from './componentes/MainPage';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+
 
 function App() {
 
   const [livManager, setLivManager] = useState<any>(null)
   const [provider, setProvider] = useState<any>(null)
   const [connected, setConnected] = useState<boolean>(false)
+  const [key, setKey] = useState<any>('home');
+
+
+  const updateView = (e: any) => {
+    setKey(e.target.id)
+  }
 
   async function connect() {
 
@@ -29,18 +37,26 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {connected ?
-          <MainPage livManager={livManager} provider={provider}/>
-          :
-          <button onClick={() => connect()}>
-            Connect to MetaMask
-          </button>
-        }
-      </header>
-    </div>
+    <>
+      <Navbar bg="dark" variant="dark" onClick={updateView}>
+        <Container>
+          <Navbar.Brand href="#home">LivCare</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link id="home">Home</Nav.Link>
+            <Nav.Link id="dashboard">Dashboard</Nav.Link>
+            <Nav.Link id="profile">Profile</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      {connected ?
+        <MainPage livManager={livManager} provider={provider} view={key} />
+        :
+        <button onClick={() => connect()}>
+          Connect to MetaMask
+        </button>
+      }
+    </>
   );
 }
 
-export default App;
+export default React.memo(App);
