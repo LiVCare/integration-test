@@ -41,6 +41,11 @@
   }
 }
 
+.dashboard button{
+    margin-bottom: 40px;
+    margin-right: 10px;
+}
+
 .main{
   padding-top: 25px;
 }

@@ -63,6 +63,7 @@ const TableAssets = ({ livManager, provider }: TableAssetsProps) => {
                 decimals={decimals}
                 livManager={livManager}
                 provider={provider}
+                type={'deposit'}
             />
         </>
     )
