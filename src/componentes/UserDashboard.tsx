@@ -38,8 +38,6 @@ const UserDashboard = ({ livManager, provider }: UserDashboardProps) => {
         const deposits = tokensUser.filter((token: any) => Number(token.currentATokenBalance) > 0)
         const borrows = tokensUser.filter((token: any) => Number(token.currentVariableDebt) > 0)
 
-        console.log(tokensUser)
-
         const depositedTokens = deposits.map((deposit: any) => {
             const token = tokens.find((element: any) => element.id == deposit.id)
             return {
