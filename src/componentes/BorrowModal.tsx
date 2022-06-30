@@ -2,23 +2,22 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { DEFAULT_IR_TYPE } from 'src/config';
 
-interface InvestModalProps {
+interface BorrowModalProps {
     show: boolean
     setShow: (status: boolean) => void
     asset: string
     decimals: string
     livManager: any
     provider: any
-    type: string
 }
 
-const InvestModal = ({ show, setShow, asset, decimals, livManager, provider, type }: InvestModalProps) => {
+const BorrowModal = ({ show, setShow, asset, decimals, livManager, provider }: BorrowModalProps) => {
 
-    const [state, setState] = useState<string>('approve')
+    const [state, setState] = useState<string>('init')
     const [waitingTx, setWaitingTx] = useState<boolean>(false)
 
     const cleanAndClose = () => {
-        setState('approve')
+        setState('init')
         setShow(false)
     }
 
@@ -30,16 +29,8 @@ const InvestModal = ({ show, setShow, asset, decimals, livManager, provider, typ
         event.preventDefault();
         const amountForm = (event.target.amount.value);
         const amount = (10 ** Number(decimals)) * Number(amountForm)
-        let tx = null
-        if (state == 'approve') {
-            tx = await livManager.singleAsset.approve(asset, amount)
-            setState('invest')
-        } else {
-            type == 'deposit' ?
-                tx = await livManager.singleAsset.deposit(asset, amount)
-                :
-                tx = await livManager.singleAsset.repay(asset, amount, DEFAULT_IR_TYPE)
-        }
+        console.log(amount)
+        const tx = await livManager.singleAsset.borrow(asset, amount, DEFAULT_IR_TYPE)
         setWaitingTx(true)
         waitTransaction(tx)
     }
@@ -52,17 +43,17 @@ const InvestModal = ({ show, setShow, asset, decimals, livManager, provider, typ
             await sleep(expectedBlockTime)
         }
         setWaitingTx(false)
-        if (state === 'invest') setState('finished')
+        setState('finished')
     }
 
     return (
         <Modal show={show} onHide={cleanAndClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Invest your tokens</Modal.Title>
+                <Modal.Title>Borrow tokens</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {state == 'finished'
-                    ? 'Your tokens have been deposited!'
+                    ? 'Your tokens have been borrowed!'
                     : <Form onSubmit={sendTx}>
                         {waitingTx ?
                             <></>
@@ -74,7 +65,7 @@ const InvestModal = ({ show, setShow, asset, decimals, livManager, provider, typ
                         {waitingTx ? 'Waiting for transaction confirmation....'
                             :
                             <Button variant="primary" type="submit">
-                                {state === 'approve' ? 'Approve' : 'Invest'}
+                                Borrow
                             </Button>}
                     </Form>}
 
@@ -83,4 +74,4 @@ const InvestModal = ({ show, setShow, asset, decimals, livManager, provider, typ
     )
 }
 
-export default InvestModal;
+export default BorrowModal;
